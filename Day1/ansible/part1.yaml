@@ -1,0 +1,14 @@
+- name: Part 1
+  hosts: localhost
+  vars:
+    elves: "{{ lookup('file', 'input.txt') | split('\n\n') }}"
+  tasks:
+    - name: Calculate the sum of the calories that each Elf is carrying
+      ansible.builtin.debug:
+        msg: "{{ item | split('\n') | map('int') | sum }}"
+      loop: "{{ elves }}"
+      register: calories
+
+    - name: Print the calorie sum of the Elf carrying the most calories
+      ansible.builtin.debug:
+        msg: "{{ calories['results'] | map(attribute='msg') | map('int') | max }}"
