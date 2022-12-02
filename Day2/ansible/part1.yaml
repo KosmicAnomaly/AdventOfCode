@@ -1,0 +1,14 @@
+- name: Part 1
+  hosts: localhost
+  vars:
+    games: "{{ lookup('file', 'input.txt') | split('\n') }}"
+    score: 0
+  tasks:
+    - name: Play through the Rock-Paper-Scissors games
+      ansible.builtin.include_tasks:
+        file: part1game.yaml
+      loop: "{{ games }}"
+
+    - name: Print the total score
+      ansible.builtin.debug:
+        msg: "{{ score }}"

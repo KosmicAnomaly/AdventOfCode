@@ -1,0 +1,53 @@
+- name: Opponent chooses Rock
+  block:
+    - name: You choose Rock
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 3 + 0 }}"
+      when: item.split(" ")[1] == "X"
+
+    - name: You choose Paper
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 1 + 3 }}"
+      when: item.split(" ")[1] == "Y"
+
+    - name: You choose Scissors
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 2 + 6 }}"
+      when: item.split(" ")[1] == "Z"
+  when: item.split(" ")[0] == "A"
+
+- name: Opponent chooses Paper
+  block:
+    - name: You choose Rock
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 1 + 0 }}"
+      when: item.split(" ")[1] == "X"
+
+    - name: You choose Paper
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 2 + 3 }}"
+      when: item.split(" ")[1] == "Y"
+
+    - name: You choose Scissors
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 3 + 6 }}"
+      when: item.split(" ")[1] == "Z"
+  when: item.split(" ")[0] == "B"
+
+- name: Opponent chooses Scissors
+  block:
+    - name: You choose Rock
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 2 + 0 }}"
+      when: item.split(" ")[1] == "X"
+
+    - name: You choose Paper
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 3 + 3 }}"
+      when: item.split(" ")[1] == "Y"
+
+    - name: You choose Scissors
+      ansible.builtin.set_fact:
+        score: "{{ score | int + 1 + 6 }}"
+      when: item.split(" ")[1] == "Z"
+  when: item.split(" ")[0] == "C"
