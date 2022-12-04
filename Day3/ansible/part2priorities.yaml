@@ -1,0 +1,17 @@
+- name: Get unique characters in each rucksack
+  ansible.builtin.set_fact:
+    first: "{{ item[0] | regex_replace('(\\w)', ' \\1') }}"
+    second: "{{ item[1] | regex_replace('(\\w)', ' \\1') }}"
+    third: "{{ item[2] | regex_replace('(\\w)', ' \\1') }}"
+
+- name: Get the shared character
+  ansible.builtin.set_fact:
+    shared_chars: "{{ first | intersect(second) | intersect(third) | difference([' ']) }}"
+
+- name: Get the priority
+  ansible.builtin.set_fact:
+    priority: "{{ lookup('ansible.utils.index_of', priorities, 'eq', shared_chars[0]) + 1 }}"
+
+- name: Add the priority
+  ansible.builtin.set_fact:
+    sum: "{{ sum | int + priority | int }}"

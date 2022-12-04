@@ -1,0 +1,16 @@
+- name: Get the left and right halves
+  ansible.builtin.set_fact:
+    left: "{{ item[:(item | length | int / 2) | int] | regex_replace('(\\w)', ' \\1') }}"
+    right: "{{ item[(item | length | int / 2) | int:] | regex_replace('(\\w)', ' \\1') }}"
+
+- name: Get the shared character
+  ansible.builtin.set_fact:
+    shared_chars: "{{ left | intersect(right) | difference([' ']) }}"
+
+- name: Get the priority
+  ansible.builtin.set_fact:
+    priority: "{{ lookup('ansible.utils.index_of', priorities, 'eq', shared_chars[0]) + 1 }}"
+
+- name: Add the priority
+  ansible.builtin.set_fact:
+    sum: "{{ sum | int + priority | int }}"
